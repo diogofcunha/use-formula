@@ -14,6 +14,10 @@ export default defineConfig({
     },
     rollupOptions: {
       external: ["react"],
+      output: {
+        assetFileNames: "assets/[name][extname]",
+        entryFileNames: "[name].js",
+      },
     },
   },
 });
