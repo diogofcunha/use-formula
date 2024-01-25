@@ -6,6 +6,7 @@ import { resolve } from "path";
 export default defineConfig({
   plugins: [react()],
   build: {
+    copyPublicDir: false,
     lib: {
       entry: resolve(__dirname, "lib/main.ts"),
       formats: ["es"],
