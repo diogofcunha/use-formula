@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function useFormula() {
-  const [s] = useState([]);
+  const [count, setCount] = useState(0);
 
-  return s;
+  return [count, setCount];
 }
