@@ -11,7 +11,7 @@
     "dev": "vite",
     "build": "tsc --p ./tsconfig-build.json && vite build",
     "prebuild:pg": "yarn build",
-    "build:pg": "tsc && vite build --config vite-playground.config.ts",
+    "build:pg": "tsc && vite build --config vite-playground.config.ts --emptyOutDir",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepublishOnly": "yarn build"
