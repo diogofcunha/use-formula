@@ -9,7 +9,7 @@ export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude],
   },
-  plugins: [react(), dts({ include: ["lib"] })],
+  plugins: [react(), dts({ include: ["lib"], exclude: ["**/__tests__/**"] })],
   build: {
     copyPublicDir: false,
     lib: {
@@ -17,7 +17,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react"],
+      external: ["react", "**/__tests__/**"],
       output: {
         assetFileNames: "assets/[name][extname]",
         entryFileNames: "[name].js",
