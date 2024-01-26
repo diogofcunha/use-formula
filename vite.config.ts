@@ -2,10 +2,14 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import dts from "vite-plugin-dts";
+import { configDefaults } from "vitest/config";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), dts({ include: ["lib"] })],
+  test: {
+    exclude: [...configDefaults.exclude],
+  },
+  plugins: [react(), dts({ include: ["lib"], exclude: ["**/__tests__/**"] })],
   build: {
     copyPublicDir: false,
     lib: {
@@ -13,7 +17,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react"],
+      external: ["react", "**/__tests__/**"],
       output: {
         assetFileNames: "assets/[name][extname]",
         entryFileNames: "[name].js",

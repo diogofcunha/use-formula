@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "test": "vitest",
     "build": "tsc --p ./tsconfig-build.json && vite build",
     "prebuild:pg": "yarn build",
     "build:pg": "tsc && vite build --config vite-playground.config.ts --emptyOutDir",
@@ -34,6 +35,7 @@
     "react-dom": "^18.2.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vite-plugin-dts": "^3.7.2"
+    "vite-plugin-dts": "^3.7.2",
+    "vitest": "^1.2.2"
   }
 }
