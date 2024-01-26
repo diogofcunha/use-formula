@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "test": "vitest",
     "build": "tsc --p ./tsconfig-build.json && vite build",
     "prebuild:pg": "yarn build",
     "build:pg": "tsc && vite build --config vite-playground.config.ts --emptyOutDir",
