@@ -2,8 +2,8 @@ import { useState, useRef } from "react";
 import { createFormulaStore } from "formula-store";
 import { Grid } from "./types";
 
-export default function useFormula() {
-  const [grid, setGrid] = useState<Grid>([[]]);
+export default function useFormula(initialGrid: Grid) {
+  const [grid, setGrid] = useState<Grid>(initialGrid);
   const cellIdxById = useRef(new Map<string, [number, number]>());
 
   useRef(
