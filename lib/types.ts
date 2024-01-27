@@ -1,4 +1,4 @@
-export type Cell = number;
+export type Cell = number | string;
 export type Grid = Cell[][];
 
 export interface UpdateCellPayload {
