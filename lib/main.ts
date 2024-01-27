@@ -1,12 +1,14 @@
 import { useState, useRef } from "react";
 import { createFormulaStore } from "formula-store";
-import { Grid } from "./types";
+import { Grid, UseFormula } from "./types";
+import { getIdxKey } from "./utils";
 
-export default function useFormula(initialGrid: Grid) {
+export default function useFormula(initialGrid: Grid): UseFormula {
   const [grid, setGrid] = useState<Grid>(initialGrid);
   const cellIdxById = useRef(new Map<string, [number, number]>());
+  const cellIdByIdx = useRef(new Map<string, string>());
 
-  useRef(
+  const store = useRef(
     createFormulaStore({
       onChange: (updates) => {
         const newGrid = grid.slice();
@@ -34,5 +36,27 @@ export default function useFormula(initialGrid: Grid) {
     })
   );
 
-  return grid;
+  return {
+    grid,
+    updateCellValues: (updates) => {
+      store.current.updateFieldsValue(
+        updates.map((updt) => {
+          const id = cellIdByIdx.current.get(
+            getIdxKey(updt.rowIdx, updt.columnIdx)
+          );
+
+          if (id === undefined) {
+            throw new Error(
+              `Cell (${updt.rowIdx},${updt.columnIdx}) not found.`
+            );
+          }
+
+          return {
+            id,
+            value: updt.value,
+          };
+        })
+      );
+    },
+  };
 }
