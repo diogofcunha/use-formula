@@ -1,12 +1,27 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createFormulaStore } from "formula-store";
 import { Grid, UseFormula } from "./types";
 import { getIdxKey } from "./utils";
+import { v4 } from "uuid";
 
 export default function useFormula(initialGrid: Grid): UseFormula {
   const [grid, setGrid] = useState<Grid>(initialGrid);
   const cellIdxById = useRef(new Map<string, [number, number]>());
   const cellIdByIdx = useRef(new Map<string, string>());
+
+  useEffect(() => {
+    for (let rowIdx = 0; rowIdx < initialGrid.length; rowIdx++) {
+      const column = initialGrid[rowIdx];
+
+      for (let columnIdx = 0; columnIdx < column.length; columnIdx++) {
+        const id = v4();
+
+        cellIdxById.current.set(id, [rowIdx, columnIdx]);
+        cellIdByIdx.current.set(getIdxKey(rowIdx, columnIdx), id);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const store = useRef(
     createFormulaStore({
