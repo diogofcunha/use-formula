@@ -1,5 +1,6 @@
 import "./App.css";
 import useFormula from "../";
+import Cell from "./components/Cell";
 
 function App() {
   const { grid, updateCellValues } = useFormula([
@@ -7,6 +8,8 @@ function App() {
     [0, 1, 2, 3, 4],
     [0, 1, 2, 3, 4],
   ]);
+
+  console.log(grid);
 
   return (
     <>
@@ -19,20 +22,13 @@ function App() {
               <tr key={rowIdx}>
                 {row.map((column, columnIdx) => {
                   return (
-                    <td key={columnIdx}>
-                      <input
-                        value={column}
-                        onChange={(up) => {
-                          updateCellValues([
-                            {
-                              columnIdx,
-                              rowIdx,
-                              value: Number(up.target.value),
-                            },
-                          ]);
-                        }}
-                      />
-                    </td>
+                    <Cell
+                      key={`${rowIdx}-${columnIdx}`}
+                      columnIdx={columnIdx}
+                      rowIdx={rowIdx}
+                      value={column}
+                      onChange={updateCellValues}
+                    />
                   );
                 })}
               </tr>
