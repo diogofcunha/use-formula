@@ -9,20 +9,6 @@ export default function useFormula(initialGrid: Grid): UseFormula {
   const cellIdxById = useRef(new Map<string, [number, number]>());
   const cellIdByIdx = useRef(new Map<string, string>());
 
-  useEffect(() => {
-    for (let rowIdx = 0; rowIdx < initialGrid.length; rowIdx++) {
-      const column = initialGrid[rowIdx];
-
-      for (let columnIdx = 0; columnIdx < column.length; columnIdx++) {
-        const id = v4();
-
-        cellIdxById.current.set(id, [rowIdx, columnIdx]);
-        cellIdByIdx.current.set(getIdxKey(rowIdx, columnIdx), id);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const store = useRef(
     createFormulaStore({
       onChange: (updates) => {
@@ -50,6 +36,28 @@ export default function useFormula(initialGrid: Grid): UseFormula {
       },
     })
   );
+
+  useEffect(() => {
+    for (let rowIdx = 0; rowIdx < initialGrid.length; rowIdx++) {
+      const column = initialGrid[rowIdx];
+
+      for (let columnIdx = 0; columnIdx < column.length; columnIdx++) {
+        const value = column[columnIdx];
+        const id = v4();
+
+        store.current.addField({
+          dependencies: [],
+          id,
+          value,
+        });
+
+        cellIdxById.current.set(id, [rowIdx, columnIdx]);
+        cellIdByIdx.current.set(getIdxKey(rowIdx, columnIdx), id);
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     grid,
