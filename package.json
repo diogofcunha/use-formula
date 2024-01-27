@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@types/uuid": "^9.0.8",
+    "formula-store": "^1.0.0",
     "uuid": "^9.0.1"
   }
 }
