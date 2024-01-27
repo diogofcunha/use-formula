@@ -9,5 +9,5 @@ export interface UpdateCellPayload {
 
 export interface UseFormula {
   grid: Grid;
-  updateCellValue: (update: UpdateCellPayload) => void;
+  updateCellValues: (update: UpdateCellPayload[]) => void;
 }
