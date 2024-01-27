@@ -24,7 +24,7 @@ export default function useFormula(initialGrid: Grid): UseFormula {
 
             newGrid[idx[0]] = newGrid[idx[0]].slice();
 
-            const cell = newGrid[(idx[0], idx[1])];
+            const cell = newGrid[idx[0]][idx[1]];
 
             if (cell === undefined) {
               throw new Error(`Failed to get cell at (${idx[0]},${idx[1]})`);
