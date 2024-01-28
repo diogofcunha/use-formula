@@ -9,6 +9,12 @@ export function parseCell(cell: Cell): number | string {
     if (!Number.isNaN(Number(cell))) {
       return Number(cell);
     }
+
+    if (cell.startsWith("=")) {
+      //
+    } else {
+      return cell;
+    }
   }
 
   throw new Error("Not implemented");
