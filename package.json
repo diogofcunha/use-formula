@@ -40,7 +40,9 @@
     "vitest": "^1.2.2"
   },
   "dependencies": {
+    "@types/mathjs": "^9.4.2",
     "formula-store": "^1.0.0",
+    "mathjs": "^12.3.0",
     "uuid": "^9.0.1"
   }
 }
