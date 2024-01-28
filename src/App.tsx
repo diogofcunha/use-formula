@@ -9,8 +9,6 @@ function App() {
     [0, 1, 2, 3, 4],
   ]);
 
-  console.log(grid);
-
   return (
     <>
       <div></div>
