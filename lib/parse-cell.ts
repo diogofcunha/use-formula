@@ -5,5 +5,11 @@ export function parseCell(cell: Cell): number | string {
     return cell;
   }
 
+  if (typeof cell === "string") {
+    if (!Number.isNaN(Number(cell))) {
+      return Number(cell);
+    }
+  }
+
   throw new Error("Not implemented");
 }
