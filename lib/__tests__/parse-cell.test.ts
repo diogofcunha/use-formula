@@ -11,4 +11,9 @@ describe("parseCell", () => {
     expect(parseCell("123")).toEqual(123);
     expect(parseCell("123.23")).toEqual(123.23);
   });
+
+  test("should return a string if a simple string is provided", () => {
+    expect(parseCell("Hello")).toEqual("Hello");
+    expect(parseCell("Hello 234")).toEqual("Hello 234");
+  });
 });
