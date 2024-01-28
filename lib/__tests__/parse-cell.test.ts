@@ -6,4 +6,9 @@ describe("parseCell", () => {
     expect(parseCell(123)).toEqual(123);
     expect(parseCell(123.23)).toEqual(123.23);
   });
+
+  test("should return a number if a number as string is provided", () => {
+    expect(parseCell("123")).toEqual(123);
+    expect(parseCell("123.23")).toEqual(123.23);
+  });
 });
