@@ -19,7 +19,13 @@ export default function Cell<T>({
         type="text"
         defaultValue={`${value}`}
         onBlur={(e) => {
-          onChange([{ columnIdx, rowIdx, value: Number(e.target.value) }]);
+          let value: string | number = e.target.value;
+
+          if (value && !Number.isNaN(Number(value))) {
+            value = Number(value);
+          }
+
+          onChange([{ columnIdx, rowIdx, value }]);
         }}
       />
     </td>
