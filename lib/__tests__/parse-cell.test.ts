@@ -71,4 +71,10 @@ describe("parseCell", () => {
     expect(dependencies).toEqual(["0-0"]);
     expect(calculate(45)).toEqual(Math.cos(45));
   });
+
+  test("should handle sin formulas", () => {
+    const { dependencies, calculate } = parseCell("=sin(A1)") as Formula;
+    expect(dependencies).toEqual(["0-0"]);
+    expect(calculate(45)).toEqual(Math.sin(45));
+  });
 });
