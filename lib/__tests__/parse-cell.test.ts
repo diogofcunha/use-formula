@@ -65,4 +65,10 @@ describe("parseCell", () => {
     expect(dependencies).toEqual(["0-0", "0-1"]);
     expect(calculate(4, 2)).toEqual(16);
   });
+
+  test("should handle cos formulas", () => {
+    const { dependencies, calculate } = parseCell("=cos(A1)") as Formula;
+    expect(dependencies).toEqual(["0-0"]);
+    expect(calculate(45)).toEqual(Math.cos(45));
+  });
 });
