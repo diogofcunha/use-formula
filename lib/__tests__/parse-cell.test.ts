@@ -83,4 +83,16 @@ describe("parseCell", () => {
     expect(dependencies).toEqual(["0-0"]);
     expect(calculate(45)).toEqual(Math.tan(45));
   });
+
+  test("should mix numbers and cells in formulas", () => {
+    const { dependencies, calculate } = parseCell("=A1+A2*5") as Formula;
+    expect(dependencies).toEqual(["0-0", "1-0"]);
+    expect(calculate(5, 6)).toEqual(35);
+  });
+
+  test("should handle order in formulas", () => {
+    const { dependencies, calculate } = parseCell("=(A1+A2)*5") as Formula;
+    expect(dependencies).toEqual(["0-0", "1-0"]);
+    expect(calculate(5, 6)).toEqual(11 * 5);
+  });
 });
