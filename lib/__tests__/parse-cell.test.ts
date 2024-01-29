@@ -59,4 +59,10 @@ describe("parseCell", () => {
     expect(dependencies).toEqual(["0-0"]);
     expect(calculate(4)).toEqual(2);
   });
+
+  test("should handle exponential formulas", () => {
+    const { dependencies, calculate } = parseCell("=A1^B1") as Formula;
+    expect(dependencies).toEqual(["0-0", "0-1"]);
+    expect(calculate(4, 2)).toEqual(16);
+  });
 });
