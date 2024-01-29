@@ -1,6 +1,6 @@
 import { Cell } from "./types";
 import { getIdxKey } from "./utils";
-import { evaluate } from "mathjs";
+import { evaluate } from "mathjs/number";
 
 export interface Formula {
   dependencies: string[];
