@@ -95,4 +95,46 @@ describe("parseCell", () => {
     expect(dependencies).toEqual(["0-0", "1-0"]);
     expect(calculate(5, 6)).toEqual(11 * 5);
   });
+
+  test("should handle a complex formula with various operations and functions", () => {
+    const complexFormula =
+      "=A1 + B1 - C1 * (D1 / E1) + sqrt(F1) + cos(G1) + sin(H1) + tan(I1)";
+    const { dependencies, calculate } = parseCell(complexFormula) as Formula;
+
+    expect(dependencies).toEqual([
+      "0-0", // A1
+      "0-1", // B1
+      "0-2", // C1
+      "0-3", // D1
+      "0-4", // E1
+      "0-5", // F1
+      "0-6", // G1
+      "0-7", // H1
+      "0-8", // I1
+    ]);
+
+    const result = calculate(
+      10, // A1
+      5, // B1
+      3, // C1
+      8, // D1
+      2, // E1
+      9, // F1
+      45, // G1
+      45, // H1
+      45 // I1
+    );
+
+    // This is the expected value based on the formula
+    const expectedValue =
+      10 +
+      5 -
+      3 * (8 / 2) +
+      Math.sqrt(9) +
+      Math.cos(45) +
+      Math.sin(45) +
+      Math.tan(45);
+
+    expect(result).toEqual(expectedValue);
+  });
 });
