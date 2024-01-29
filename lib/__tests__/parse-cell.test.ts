@@ -1,5 +1,6 @@
 import { expect, test, describe } from "vitest";
-import { parseCell, Formula } from "../parse-cell";
+import { parseCell } from "../parse-cell";
+import { Formula } from "../types";
 
 describe("parseCell", () => {
   test("should return a number if a number is provided", () => {

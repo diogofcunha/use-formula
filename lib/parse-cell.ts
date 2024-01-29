@@ -1,12 +1,6 @@
-import { Cell } from "./types";
+import { Cell, Formula } from "./types";
 import { getIdxKey } from "./utils";
 import { evaluate } from "mathjs/number";
-
-export interface Formula {
-  dependencies: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  calculate: (...dependencies: any[]) => any;
-}
 
 export function parseCell(cell: Cell): number | string | Formula {
   if (typeof cell === "number") {

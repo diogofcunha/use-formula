@@ -1,3 +1,9 @@
+export interface Formula {
+  dependencies: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  calculate: (...dependencies: any[]) => any;
+}
+
 export type Cell = number | string;
 export type Grid = Cell[][];
 
