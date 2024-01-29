@@ -47,10 +47,16 @@ describe("parseCell", () => {
     expect(calculate(4, 2, 1)).toEqual(2);
   });
 
-  test("should handle multiplication formulas with repeated cells", () => {
+  test("should handle division formulas with repeated cells", () => {
     const { dependencies, calculate } = parseCell("=A1/A2/B1/A2") as Formula;
     expect(dependencies).toEqual(["0-0", "1-0", "0-1"]);
     expect(calculate(4, 2, 1)).toEqual(1);
     expect(calculate(3, 2, 1)).toEqual(0.75);
+  });
+
+  test("should handle sqrt formulas", () => {
+    const { dependencies, calculate } = parseCell("=sqrt(A1)") as Formula;
+    expect(dependencies).toEqual(["0-0"]);
+    expect(calculate(4)).toEqual(2);
   });
 });
