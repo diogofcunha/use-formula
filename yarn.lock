@@ -1439,10 +1439,10 @@ flatted@^3.2.9:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.9.tgz#7eb4c67ca1ba34232ca9d2d93e9886e611ad7daf"
   integrity sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==
 
-formula-store@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/formula-store/-/formula-store-1.0.0.tgz#969c9a6497b99f72ca7dd00148246dfb488d2322"
-  integrity sha512-+aDdi8Bwb7ld2WmAP+bT2QgcCF0NvjVvZkFp0Y9V+xKgFpM5gZRUUAlBHQeBku8M2wP8sE+6UPr8Fx3QlUcmlg==
+formula-store@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/formula-store/-/formula-store-1.1.0.tgz#bea6d99d00c40029f802e779f6e0297937c948b0"
+  integrity sha512-8zDdn/SimHyanEpR9Wy/NWfvdFE/eGYL+vt/MRfBY01tNQtSRQksh876b1sLAQneMjGj9d/4XXPB8f645Lo9HA==
   dependencies:
     fast-graph "^1.5.0"
 
