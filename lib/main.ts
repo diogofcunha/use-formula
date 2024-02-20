@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { createFormulaStore } from "formula-store";
-import { Grid, UseFormula } from "./types";
+import { Formula, Grid, UseFormula } from "./types";
 import { getIdxKey } from "./utils";
 import { v4 } from "uuid";
+import { parseCell } from "./parse-cell";
 
 export default function useFormula(initialGrid: Grid): UseFormula {
   const [grid, setGrid] = useState<Grid>(initialGrid);
@@ -40,12 +41,23 @@ export default function useFormula(initialGrid: Grid): UseFormula {
   );
 
   useEffect(() => {
+    const formulas: Array<Formula & { id: string }> = [];
+
     for (let rowIdx = 0; rowIdx < initialGrid.length; rowIdx++) {
       const column = initialGrid[rowIdx];
 
       for (let columnIdx = 0; columnIdx < column.length; columnIdx++) {
-        const value = column[columnIdx];
+        const cell = parseCell(column[columnIdx]);
         const id = v4();
+
+        let value: string | number = "";
+
+        if (typeof cell === "object") {
+          value = "";
+          formulas.push({ ...cell, id });
+        } else {
+          value = cell;
+        }
 
         store.current.addField({
           dependencies: [],
@@ -56,6 +68,17 @@ export default function useFormula(initialGrid: Grid): UseFormula {
         cellIdxById.current.set(id, [rowIdx, columnIdx]);
         cellIdByIdx.current.set(getIdxKey(rowIdx, columnIdx), id);
       }
+    }
+
+    for (const f of formulas) {
+      store.current.editField({
+        dependencies: f.dependencies.map((d) => {
+          return cellIdByIdx.current.get(d)!;
+        }),
+        calculate: f.calculate,
+        id: f.id,
+        value: "",
+      });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
