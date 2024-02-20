@@ -1,6 +1,7 @@
 import "./App.css";
 import useFormula from "../";
 import Cell from "./components/Cell";
+import { useRenderCounter } from "./hooks/useRenderCounter";
 
 function App() {
   const { grid, updateCellValues } = useFormula([
@@ -9,9 +10,11 @@ function App() {
     [0, 1, 2, 3, 4],
   ]);
 
+  const renderCount = useRenderCounter();
+
   return (
     <>
-      <div></div>
+      <div>Rendered {renderCount}</div>
       <h1>Simple example</h1>
       <table>
         <tbody>
