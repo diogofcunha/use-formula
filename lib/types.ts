@@ -4,7 +4,7 @@ export interface Formula {
   calculate: (...dependencies: any[]) => any;
 }
 
-export type Cell = number | string;
+export type Cell = number | string | Formula;
 export type Grid = Cell[][];
 
 export interface UpdateCellPayload {
