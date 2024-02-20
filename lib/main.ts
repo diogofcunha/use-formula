@@ -4,6 +4,7 @@ import { Formula, Grid, UseFormula } from "./types";
 import { getIdxKey } from "./utils";
 import { v4 } from "uuid";
 import { parseCell } from "./parse-cell";
+import { FormulaField } from "formula-store/lib/types";
 
 export default function useFormula(initialGrid: Grid): UseFormula {
   const [grid, setGrid] = useState<Grid>(initialGrid);
@@ -77,9 +78,7 @@ export default function useFormula(initialGrid: Grid): UseFormula {
 
     for (const f of formulas) {
       store.current.editField({
-        dependencies: f.dependencies.map((d) => {
-          return cellIdByIdx.current.get(d)!;
-        }),
+        dependencies: mapDependencies(f),
         calculate: f.calculate,
         id: f.id,
         value: "",
@@ -92,24 +91,44 @@ export default function useFormula(initialGrid: Grid): UseFormula {
   return {
     grid,
     updateCellValues: (updates) => {
-      store.current.updateFieldsValue(
-        updates.map((updt) => {
-          const id = cellIdByIdx.current.get(
-            getIdxKey(updt.rowIdx, updt.columnIdx)
-          );
+      const cells = updates.map((u) => {
+        const id = cellIdByIdx.current.get(getIdxKey(u.rowIdx, u.columnIdx));
 
-          if (id === undefined) {
-            throw new Error(
-              `Cell (${updt.rowIdx},${updt.columnIdx}) not found.`
-            );
-          }
+        if (id === undefined) {
+          throw new Error(`Cell (${u.rowIdx},${u.columnIdx}) not found.`);
+        }
 
-          return {
+        return { cell: parseCell(u.value), id };
+      });
+
+      const simpleUpdates: Array<{ value: unknown; id: string }> = [];
+      const fullFieldUpdates: Array<FormulaField<any>> = [];
+
+      for (const { cell, id } of cells) {
+        if (typeof cell === "object") {
+          fullFieldUpdates.push({
+            calculate: cell.calculate,
+            dependencies: mapDependencies(cell),
             id,
-            value: updt.value,
-          };
-        })
-      );
+            value: "",
+          });
+        } else {
+          simpleUpdates.push({ value: cell, id });
+        }
+      }
+
+      if (simpleUpdates.length) {
+        store.current.updateFieldsValue(simpleUpdates);
+      }
+
+      for (const f of fullFieldUpdates) {
+        store.current.editField({
+          dependencies: f.dependencies,
+          calculate: f.calculate,
+          id: f.id,
+          value: "",
+        });
+      }
     },
   };
 }
