@@ -10,6 +10,11 @@ export default function useFormula(initialGrid: Grid): UseFormula {
   const cellIdxById = useRef(new Map<string, [number, number]>());
   const cellIdByIdx = useRef(new Map<string, string>());
 
+  const mapDependencies = (formula: Formula) =>
+    formula.dependencies.map((d) => {
+      return cellIdByIdx.current.get(d)!;
+    });
+
   const store = useRef(
     createFormulaStore({
       onChange: (updates) => {
