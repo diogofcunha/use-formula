@@ -5,7 +5,7 @@ import Cell from "./components/Cell";
 function App() {
   const { grid, updateCellValues } = useFormula([
     [0, 1, 2, 3, 4],
-    [0, 1, 2, 3, 4],
+    [0, "=A1+B1+C1+C3", 2, 3, 4],
     [0, 1, 2, 3, 4],
   ]);
 
