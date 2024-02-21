@@ -102,7 +102,7 @@ export default function useFormula(initialGrid: Grid): UseFormula {
       });
 
       const simpleUpdates: Array<{ value: unknown; id: string }> = [];
-      const fullFieldUpdates: Array<FormulaField<any>> = [];
+      const fullFieldUpdates: Array<FormulaField<unknown>> = [];
 
       for (const { cell, id } of cells) {
         if (typeof cell === "object") {
