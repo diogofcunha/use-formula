@@ -13,7 +13,7 @@ export interface UpdateCellPayload {
   value: Cell;
 }
 
-export interface UseFormula {
+export interface FormulaContextValue {
   grid: Grid;
   updateCellValues: (update: UpdateCellPayload[]) => void;
 }

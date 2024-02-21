@@ -1,12 +1,12 @@
 import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
-import { Formula, Grid, UseFormula } from "./types";
+import { Formula, Grid, FormulaContextValue } from "./types";
 import { createFormulaStore } from "formula-store";
 import { parseCell } from "./parse-cell";
 import { v4 } from "uuid";
 import { getIdxKey } from "./utils";
 import { FormulaField } from "formula-store/lib/types";
 
-export const FormulaContext = React.createContext<UseFormula>({
+export const FormulaContext = React.createContext<FormulaContextValue>({
   grid: [],
   updateCellValues: () => {},
 });

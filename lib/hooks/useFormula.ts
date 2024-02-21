@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { UseFormula } from "../types";
+import { FormulaContextValue } from "../types";
 import { FormulaContext } from "../FormulaProvider";
 
-export function useFormula(): UseFormula {
+export function useFormula(): FormulaContextValue {
   const { grid, updateCellValues } = useContext(FormulaContext);
 
   return {
