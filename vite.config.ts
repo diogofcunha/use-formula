@@ -8,6 +8,7 @@ import { configDefaults } from "vitest/config";
 export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude],
+    environment: "happy-dom",
   },
   plugins: [react(), dts({ include: ["lib"], exclude: ["**/__tests__/**"] })],
   build: {
