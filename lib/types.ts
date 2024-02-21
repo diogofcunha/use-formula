@@ -14,6 +14,6 @@ export interface UpdateCellPayload {
 }
 
 export interface FormulaContextValue {
-  grid: Grid;
+  getGrid: () => Grid;
   updateCellValues: (update: UpdateCellPayload[]) => void;
 }

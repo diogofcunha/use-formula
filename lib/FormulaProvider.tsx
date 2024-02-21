@@ -7,7 +7,7 @@ import { getIdxKey } from "./utils";
 import { FormulaField } from "formula-store/lib/types";
 
 export const FormulaContext = React.createContext<FormulaContextValue>({
-  grid: [],
+  getGrid: () => [],
   updateCellValues: () => {},
 });
 
@@ -99,7 +99,7 @@ export function FormulaProvider({
   return (
     <FormulaContext.Provider
       value={{
-        grid,
+        getGrid: () => grid,
         updateCellValues: (updates) => {
           const cells = updates.map((u) => {
             const id = cellIdByIdx.current.get(
