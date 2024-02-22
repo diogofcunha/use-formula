@@ -4,7 +4,7 @@ const eventEmitter = new EventTarget();
 
 const EVENT_NAME = "cell-value-update";
 
-export type SubscriptionCallback = (coordinates: CellCoordinates) => void;
+export type SubscriptionCallback = (coordinates: UpdateEvent) => void;
 
 export type UpdateEvent = CellCoordinates & {
   value: Cell;
