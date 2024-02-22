@@ -1,4 +1,4 @@
-import { CellCoordinates } from "./types";
+import { Cell, CellCoordinates } from "./types";
 
 const eventEmitter = new EventTarget();
 
@@ -6,10 +6,15 @@ const EVENT_NAME = "cell-value-update";
 
 export type SubscriptionCallback = (coordinates: CellCoordinates) => void;
 
+export type UpdateEvent = CellCoordinates & {
+  value: Cell;
+  displayValue: string;
+};
+
 export function getEventEmitter() {
   return {
-    emitEvent: (coordinates: CellCoordinates) => {
-      const event = new CustomEvent(EVENT_NAME, { detail: coordinates });
+    emitEvent: (update: UpdateEvent) => {
+      const event = new CustomEvent(EVENT_NAME, { detail: update });
       eventEmitter.dispatchEvent(event);
     },
     subscribe: (callback: SubscriptionCallback): (() => void) => {
