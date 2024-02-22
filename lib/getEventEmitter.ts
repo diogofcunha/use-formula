@@ -1,11 +1,8 @@
+import { CellCoordinates } from "./types";
+
 const eventEmitter = new EventTarget();
 
 const EVENT_NAME = "cell-value-update";
-
-export interface CellCoordinates {
-  rowIdx: number;
-  columnIdx: number;
-}
 
 export type SubscriptionCallback = (coordinates: CellCoordinates) => void;
 

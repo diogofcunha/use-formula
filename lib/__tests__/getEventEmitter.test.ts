@@ -1,5 +1,6 @@
 import { expect, test, describe } from "vitest";
-import { CellCoordinates, getEventEmitter } from "../getEventEmitter";
+import { getEventEmitter } from "../getEventEmitter";
+import { CellCoordinates } from "../types";
 
 describe("getEventEmitter", () => {
   test("should emit and subscribe", () => {

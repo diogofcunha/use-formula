@@ -7,6 +7,11 @@ export interface Formula {
 export type Cell = number | string | Formula;
 export type Grid = Cell[][];
 
+export interface CellCoordinates {
+  rowIdx: number;
+  columnIdx: number;
+}
+
 export interface UpdateCellPayload {
   rowIdx: number;
   columnIdx: number;
