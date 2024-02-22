@@ -16,13 +16,12 @@ function Grid() {
           {getGrid().map((row, rowIdx) => {
             return (
               <tr key={rowIdx}>
-                {row.map((column, columnIdx) => {
+                {row.map((_, columnIdx) => {
                   return (
                     <Cell
                       key={`${rowIdx}-${columnIdx}`}
                       columnIdx={columnIdx}
                       rowIdx={rowIdx}
-                      value={column}
                       onChange={updateCellValues}
                     />
                   );
