@@ -21,4 +21,5 @@ export interface UpdateCellPayload {
 export interface FormulaContextValue {
   getGrid: () => Grid;
   updateCellValues: (update: UpdateCellPayload[]) => void;
+  watchCell: (coordinates: CellCoordinates) => void;
 }
