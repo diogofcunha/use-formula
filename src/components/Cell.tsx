@@ -1,18 +1,15 @@
+import { useWatchCell } from "../..";
 import { UpdateCellPayload } from "../../lib/types";
 
-interface Props<T> {
+interface Props {
   columnIdx: number;
   rowIdx: number;
-  value: T;
   onChange: (value: UpdateCellPayload[]) => void;
 }
 
-export default function Cell<T>({
-  columnIdx,
-  rowIdx,
-  value,
-  onChange,
-}: Props<T>) {
+export default function Cell({ columnIdx, rowIdx, onChange }: Props) {
+  const { value } = useWatchCell({ rowIdx, columnIdx });
+
   return (
     <td>
       <input
