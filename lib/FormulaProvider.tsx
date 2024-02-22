@@ -9,7 +9,6 @@ import { FormulaField } from "formula-store/lib/types";
 export const FormulaContext = React.createContext<FormulaContextValue>({
   getGrid: () => [],
   updateCellValues: () => {},
-  watchCell: () => {},
 });
 
 export function FormulaProvider({
@@ -100,7 +99,6 @@ export function FormulaProvider({
   return (
     <FormulaContext.Provider
       value={{
-        watchCell: () => {},
         getGrid: () => grid,
         updateCellValues: (updates) => {
           const cells = updates.map((u) => {
