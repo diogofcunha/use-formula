@@ -1,21 +1,24 @@
-import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import React, { PropsWithChildren, useEffect, useRef } from "react";
 import { Formula, Grid, FormulaContextValue } from "./types";
 import { createFormulaStore } from "formula-store";
 import { parseCell } from "./parse-cell";
 import { v4 } from "uuid";
 import { getIdxKey } from "./utils";
 import { FormulaField } from "formula-store/lib/types";
+import { getEventEmitter } from "./getEventEmitter";
 
 export const FormulaContext = React.createContext<FormulaContextValue>({
   getGrid: () => [],
   updateCellValues: () => {},
 });
 
+const eventEmitter = getEventEmitter();
+
 export function FormulaProvider({
   initialGrid,
   children,
 }: PropsWithChildren<{ initialGrid: Grid }>) {
-  const [grid, setGrid] = useState<Grid>(initialGrid);
+  const grid = useRef<Grid>(initialGrid);
   const cellIdxById = useRef(new Map<string, [number, number]>());
   const cellIdByIdx = useRef(new Map<string, string>());
 
@@ -27,29 +30,39 @@ export function FormulaProvider({
   const store = useRef(
     createFormulaStore({
       onChange: (updates) => {
-        setGrid((g) => {
-          const newGrid = g.slice();
+        const newGrid = grid.current;
 
-          for (const { id, value } of updates) {
-            const idx = cellIdxById.current.get(id);
+        for (const { id, value } of updates) {
+          const idx = cellIdxById.current.get(id);
 
-            if (!idx) {
-              throw new Error(`Failed to get cell with id ${id}`);
-            }
-
-            newGrid[idx[0]] = newGrid[idx[0]].slice();
-
-            const cell = newGrid[idx[0]][idx[1]];
-
-            if (cell === undefined) {
-              throw new Error(`Failed to get cell at (${idx[0]},${idx[1]})`);
-            }
-
-            newGrid[idx[0]][idx[1]] = value as number;
+          if (!idx) {
+            throw new Error(`Failed to get cell with id ${id}`);
           }
 
-          return newGrid;
-        });
+          const [rowIdx, columnIdx] = idx;
+
+          newGrid[rowIdx] = newGrid[columnIdx].slice();
+
+          const cell = newGrid[rowIdx][columnIdx];
+
+          if (cell === undefined) {
+            throw new Error(`Failed to get cell at (${rowIdx},${columnIdx})`);
+          }
+
+          const previousValue = newGrid[rowIdx][columnIdx];
+
+          if (previousValue !== value) {
+            newGrid[rowIdx][columnIdx] = value as number;
+            eventEmitter.emitEvent({
+              rowIdx,
+              columnIdx,
+              value: value as number,
+              displayValue: value as string,
+            });
+          }
+        }
+
+        grid.current = newGrid;
       },
     })
   );
@@ -99,7 +112,7 @@ export function FormulaProvider({
   return (
     <FormulaContext.Provider
       value={{
-        getGrid: () => grid,
+        getGrid: () => grid.current,
         updateCellValues: (updates) => {
           const cells = updates.map((u) => {
             const id = cellIdByIdx.current.get(
