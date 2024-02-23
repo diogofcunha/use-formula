@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useRef } from "react";
-import { Formula, Grid, FormulaContextValue } from "./types";
+import { Formula, Grid, FormulaContextValue, Sheet, Cell } from "./types";
 import { createFormulaStore } from "formula-store";
 import { parseCell } from "./parse-cell";
 import { v4 } from "uuid";
@@ -10,6 +10,7 @@ import { getEventEmitter } from "./getEventEmitter";
 export const FormulaContext = React.createContext<FormulaContextValue>({
   getGrid: () => [],
   updateCellValues: () => {},
+  getSheet: () => [],
 });
 
 const eventEmitter = getEventEmitter();
@@ -18,9 +19,20 @@ export function FormulaProvider({
   initialGrid,
   children,
 }: PropsWithChildren<{ initialGrid: Grid }>) {
-  const grid = useRef<Grid>(initialGrid);
+  const sheet = useRef<Sheet>(
+    initialGrid.map((r) => {
+      return r.map((c) => {
+        return {
+          value: c,
+          calculated: c,
+        };
+      });
+    })
+  );
+
   const cellIdxById = useRef(new Map<string, [number, number]>());
   const cellIdByIdx = useRef(new Map<string, string>());
+  const formulasFieldsById = new Map<string, string>();
 
   const mapDependencies = (formula: Formula) =>
     formula.dependencies.map((d) => {
@@ -30,7 +42,7 @@ export function FormulaProvider({
   const store = useRef(
     createFormulaStore({
       onChange: (updates) => {
-        const newGrid = grid.current;
+        const newSheet = sheet.current;
 
         for (const { id, value } of updates) {
           const idx = cellIdxById.current.get(id);
@@ -41,28 +53,33 @@ export function FormulaProvider({
 
           const [rowIdx, columnIdx] = idx;
 
-          newGrid[rowIdx] = newGrid[columnIdx].slice();
+          newSheet[rowIdx] = newSheet[columnIdx].slice();
 
-          const cell = newGrid[rowIdx][columnIdx];
+          const cell = newSheet[rowIdx][columnIdx];
 
           if (cell === undefined) {
             throw new Error(`Failed to get cell at (${rowIdx},${columnIdx})`);
           }
 
-          const previousValue = newGrid[rowIdx][columnIdx];
+          const previousValue = newSheet[rowIdx][columnIdx];
 
           if (previousValue !== value) {
-            newGrid[rowIdx][columnIdx] = value as number;
+            const cellValue = formulasFieldsById.get(id) || (value as Cell);
+            const cellCalculatedValue = value as Cell;
+
+            newSheet[rowIdx][columnIdx].value = cellValue;
+            newSheet[rowIdx][columnIdx].calculated = cellCalculatedValue;
+
             eventEmitter.emitEvent({
               rowIdx,
               columnIdx,
-              value: value as number,
-              displayValue: value as string,
+              value: cellValue,
+              displayValue: cellCalculatedValue as string,
             });
           }
         }
 
-        grid.current = newGrid;
+        sheet.current = newSheet;
       },
     })
   );
@@ -80,9 +97,11 @@ export function FormulaProvider({
         let value: string | number = "";
 
         if (typeof cell === "object") {
+          formulasFieldsById.set(id, column[columnIdx] as string);
           value = "";
           formulas.push({ ...cell, id });
         } else {
+          formulasFieldsById.delete(id);
           value = cell;
         }
 
@@ -112,7 +131,8 @@ export function FormulaProvider({
   return (
     <FormulaContext.Provider
       value={{
-        getGrid: () => grid.current,
+        getSheet: () => sheet.current,
+        getGrid: () => sheet.current.map((r) => r.map((c) => c.value)),
         updateCellValues: (updates) => {
           const cells = updates.map((u) => {
             const id = cellIdByIdx.current.get(
@@ -123,14 +143,15 @@ export function FormulaProvider({
               throw new Error(`Cell (${u.rowIdx},${u.columnIdx}) not found.`);
             }
 
-            return { cell: parseCell(u.value), id };
+            return { cell: parseCell(u.value), id, original: u.value };
           });
 
           const simpleUpdates: Array<{ value: unknown; id: string }> = [];
           const fullFieldUpdates: Array<FormulaField<unknown>> = [];
 
-          for (const { cell, id } of cells) {
+          for (const { cell, id, original } of cells) {
             if (typeof cell === "object") {
+              formulasFieldsById.set(id, original as string);
               fullFieldUpdates.push({
                 calculate: cell.calculate,
                 dependencies: mapDependencies(cell),
@@ -138,6 +159,7 @@ export function FormulaProvider({
                 value: "",
               });
             } else {
+              formulasFieldsById.delete(id);
               simpleUpdates.push({ value: cell, id });
             }
           }

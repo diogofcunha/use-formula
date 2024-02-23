@@ -14,11 +14,11 @@ export function useWatchCell({
   rowIdx,
   columnIdx,
 }: CellCoordinates): CellWatchResult {
-  const { getGrid } = useFormula();
+  const { getSheet } = useFormula();
 
   const [value, setValue] = useState<CellWatchResult>({
-    value: getGrid()[rowIdx][columnIdx],
-    displayValue: getGrid()[rowIdx][columnIdx].toString(),
+    value: getSheet()[rowIdx][columnIdx].value,
+    displayValue: getSheet()[rowIdx][columnIdx].calculated.toString(),
   });
 
   useEffect(() => {
