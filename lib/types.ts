@@ -11,7 +11,7 @@ export interface SheetCell {
   value: Cell;
   calculated: Cell;
 }
-export type Sheet = SheetCell;
+export type Sheet = SheetCell[][];
 
 export interface CellCoordinates {
   rowIdx: number;
