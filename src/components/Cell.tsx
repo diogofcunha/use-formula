@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function Cell({ columnIdx, rowIdx, onChange }: Props) {
-  const { value, displayValue } = useWatchCell({ rowIdx, columnIdx });
+  const { value, calculated } = useWatchCell({ rowIdx, columnIdx });
 
   const [uncommitedValue, setUncommitedValue] = useState<null | string>(null);
 
@@ -18,7 +18,7 @@ export default function Cell({ columnIdx, rowIdx, onChange }: Props) {
       <input
         onFocus={() => setUncommitedValue(value.toString())}
         type="text"
-        value={uncommitedValue === null ? displayValue : uncommitedValue}
+        value={uncommitedValue === null ? calculated : uncommitedValue}
         onChange={(e) => {
           setUncommitedValue(e.target.value);
         }}

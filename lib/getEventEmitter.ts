@@ -8,7 +8,7 @@ export type SubscriptionCallback = (coordinates: UpdateEvent) => void;
 
 export type UpdateEvent = CellCoordinates & {
   value: Cell;
-  displayValue: string;
+  calculated: string;
 };
 
 export function getEventEmitter() {

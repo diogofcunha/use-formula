@@ -5,7 +5,7 @@ import { getEventEmitter } from "../getEventEmitter";
 
 export interface CellWatchResult {
   value: Cell;
-  displayValue: string;
+  calculated: Cell;
 }
 
 const eventEmitter = getEventEmitter();
@@ -18,7 +18,7 @@ export function useWatchCell({
 
   const [value, setValue] = useState<CellWatchResult>({
     value: getSheet()[rowIdx][columnIdx].value,
-    displayValue: getSheet()[rowIdx][columnIdx].calculated.toString(),
+    calculated: getSheet()[rowIdx][columnIdx].calculated,
   });
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export function useWatchCell({
       if (change.columnIdx === columnIdx && change.rowIdx === rowIdx) {
         setValue({
           value: change.value,
-          displayValue: change.displayValue,
+          calculated: change.calculated,
         });
       }
     });

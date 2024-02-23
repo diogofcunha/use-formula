@@ -73,7 +73,7 @@ export function FormulaProvider({
               rowIdx,
               columnIdx,
               value: cellValue,
-              displayValue: cellCalculatedValue as string,
+              calculated: cellCalculatedValue as string,
             });
           }
         }
