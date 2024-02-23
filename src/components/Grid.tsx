@@ -3,7 +3,7 @@ import Cell from "./Cell";
 import { useRenderCounter } from "../hooks/useRenderCounter";
 
 function Grid() {
-  const { getGrid, updateCellValues } = useFormula();
+  const { getSheet, updateCellValues } = useFormula();
 
   const renderCount = useRenderCounter();
 
@@ -13,7 +13,7 @@ function Grid() {
       <h1>Simple example</h1>
       <table>
         <tbody>
-          {getGrid().map((row, rowIdx) => {
+          {getSheet().map((row, rowIdx) => {
             return (
               <tr key={rowIdx}>
                 {row.map((_, columnIdx) => {
