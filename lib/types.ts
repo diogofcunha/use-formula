@@ -7,6 +7,12 @@ export interface Formula {
 export type Cell = number | string;
 export type Grid = Cell[][];
 
+export interface SheetCell {
+  value: Cell;
+  calculated: Cell;
+}
+export type Sheet = SheetCell;
+
 export interface CellCoordinates {
   rowIdx: number;
   columnIdx: number;
