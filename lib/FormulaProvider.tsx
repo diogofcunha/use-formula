@@ -8,7 +8,6 @@ import { FormulaField } from "formula-store/lib/types";
 import { getEventEmitter } from "./getEventEmitter";
 
 export const FormulaContext = React.createContext<FormulaContextValue>({
-  getGrid: () => [],
   updateCellValues: () => {},
   getSheet: () => [],
 });
@@ -132,7 +131,6 @@ export function FormulaProvider({
     <FormulaContext.Provider
       value={{
         getSheet: () => sheet.current,
-        getGrid: () => sheet.current.map((r) => r.map((c) => c.value)),
         updateCellValues: (updates) => {
           const cells = updates.map((u) => {
             const id = cellIdByIdx.current.get(
