@@ -16,6 +16,8 @@ export default function Cell({ columnIdx, rowIdx, onChange }: Props) {
   return (
     <td style={{ position: "relative" }}>
       <input
+        role="gridcell"
+        data-testid={`cell-${rowIdx}-${columnIdx}`}
         onFocus={() => setUncommitedValue(value.toString())}
         type="text"
         value={uncommitedValue === null ? calculated : uncommitedValue}
