@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useWatchCell } from "../..";
 import { UpdateCellPayload } from "../../lib/types";
 
@@ -8,13 +9,19 @@ interface Props {
 }
 
 export default function Cell({ columnIdx, rowIdx, onChange }: Props) {
-  const { value } = useWatchCell({ rowIdx, columnIdx });
+  const { value, displayValue } = useWatchCell({ rowIdx, columnIdx });
+
+  const [uncommitedValue, setUncommitedValue] = useState<null | string>(null);
 
   return (
-    <td>
+    <td style={{ position: "relative" }}>
       <input
+        onFocus={() => setUncommitedValue(value.toString())}
         type="text"
-        defaultValue={`${value}`}
+        value={uncommitedValue === null ? displayValue : uncommitedValue}
+        onChange={(e) => {
+          setUncommitedValue(e.target.value);
+        }}
         onBlur={(e) => {
           let value: string | number = e.target.value;
 
@@ -23,6 +30,7 @@ export default function Cell({ columnIdx, rowIdx, onChange }: Props) {
           }
 
           onChange([{ columnIdx, rowIdx, value }]);
+          setUncommitedValue(null);
         }}
       />
     </td>
