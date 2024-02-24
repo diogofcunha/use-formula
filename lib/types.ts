@@ -28,3 +28,8 @@ export interface FormulaContextValue {
   getSheet: () => Sheet;
   updateCellValues: (update: UpdateCellPayload[]) => void;
 }
+
+export interface CalculationError {
+  name: string;
+  detail?: string;
+}
