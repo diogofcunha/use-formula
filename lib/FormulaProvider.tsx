@@ -13,6 +13,7 @@ export const FormulaContext = React.createContext<FormulaContextValue>({
 });
 
 const eventEmitter = getEventEmitter();
+export const ERROR_CODE = "#ERROR";
 
 export function FormulaProvider({
   initialGrid,
