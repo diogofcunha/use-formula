@@ -157,13 +157,18 @@ export function FormulaProvider({
                 value: "",
               });
             } else {
-              formulasFieldsById.delete(id);
+              if (formulasFieldsById.has(id)) {
+                formulasFieldsById.delete(id);
+
+                fullFieldUpdates.push({
+                  dependencies: [],
+                  id,
+                  value: cell,
+                });
+              }
+
               simpleUpdates.push({ value: cell, id });
             }
-          }
-
-          if (simpleUpdates.length) {
-            store.current.updateFieldsValue(simpleUpdates);
           }
 
           for (const f of fullFieldUpdates) {
@@ -173,6 +178,10 @@ export function FormulaProvider({
               id: f.id,
               value: "",
             });
+          }
+
+          if (simpleUpdates.length) {
+            store.current.updateFieldsValue(simpleUpdates);
           }
         },
       }}
