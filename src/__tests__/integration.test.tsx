@@ -1,5 +1,6 @@
 import { expect, test, describe, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+
 import App from "../App";
 
 describe("integration", () => {
@@ -25,5 +26,57 @@ describe("integration", () => {
     render(<App />);
 
     expect(getCell(1, 1).value).toEqual("5");
+  });
+
+  test("should update simple cell value", () => {
+    render(<App />);
+
+    const targetInput = getCell(0, 0);
+
+    fireEvent.change(targetInput, { target: { value: "7" } });
+    fireEvent.blur(targetInput);
+
+    expect(getCell(0, 0).value).toEqual("7");
+  });
+
+  test("should update formula cell value when dependency value is changed", () => {
+    render(<App />);
+
+    const targetInput = getCell(0, 0);
+
+    fireEvent.change(targetInput, { target: { value: "1" } });
+    fireEvent.blur(targetInput);
+
+    expect(getCell(1, 1).value).toEqual("6");
+  });
+
+  test("should transform simple cell into formula", () => {
+    render(<App />);
+
+    // Setup 2 cells
+    const a1 = getCell(0, 0);
+    fireEvent.change(a1, { target: { value: "5" } });
+    fireEvent.blur(a1);
+    const b3 = getCell(2, 1);
+    fireEvent.change(b3, { target: { value: "2" } });
+    fireEvent.blur(b3);
+
+    // Transform numeric cell into formula
+    const c3 = getCell(2, 2);
+    fireEvent.change(c3, { target: { value: "=(A1+B3)*2" } });
+    fireEvent.blur(c3);
+
+    expect(getCell(2, 2).value).toEqual(`${(5 + 2) * 2}`);
+  });
+
+  test("should transform formula cell into numeric cell", () => {
+    render(<App />);
+
+    const targetInput = getCell(1, 1);
+
+    fireEvent.change(targetInput, { target: { value: "2" } });
+    fireEvent.blur(targetInput);
+
+    expect(getCell(1, 1).value).toEqual("2");
   });
 });
