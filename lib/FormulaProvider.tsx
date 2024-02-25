@@ -5,6 +5,8 @@ import { parseCell } from "./parse-cell";
 import { v4 } from "uuid";
 import { getIdxKey } from "./utils";
 import { FormulaField } from "formula-store/lib/types";
+import { FormulaFieldCircularDependencyError } from "formula-store/lib/errors";
+
 import { getEventEmitter } from "./getEventEmitter";
 
 export const FormulaContext = React.createContext<FormulaContextValue>({
@@ -181,14 +183,17 @@ export function FormulaProvider({
                 value: "",
               });
             } catch (ex) {
-              store.current.addField({
-                dependencies: [],
-                calculate: undefined,
-                id: f.id,
-                value: "",
-              });
+              if (ex instanceof FormulaFieldCircularDependencyError) {
+                store.current.addField({
+                  dependencies: [],
+                  calculate: undefined,
+                  id: f.id,
+                  value: "",
+                });
+              }
 
               formulasFieldsById.delete(f.id);
+
               simpleUpdates.push({ value: ERROR_CODE, id: f.id });
             }
           }
