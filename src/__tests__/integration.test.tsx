@@ -80,12 +80,23 @@ describe("integration", () => {
     expect(getCell(1, 1).value).toEqual("2");
   });
 
-  test("should show error when cells tries to add a circular dependency", () => {
+  test("should show error when trying to add a circular dependency", () => {
     render(<App />);
 
     const targetInput = getCell(0, 0);
 
     fireEvent.change(targetInput, { target: { value: "=B2" } });
+    fireEvent.blur(targetInput);
+
+    expect(getCell(0, 0).value).toEqual("#ERROR");
+  });
+
+  test("should show error when trying to add a dependency to a cell that doesn't exist", () => {
+    render(<App />);
+
+    const targetInput = getCell(0, 0);
+
+    fireEvent.change(targetInput, { target: { value: "=X1" } });
     fireEvent.blur(targetInput);
 
     expect(getCell(0, 0).value).toEqual("#ERROR");
