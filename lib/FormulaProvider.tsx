@@ -173,12 +173,24 @@ export function FormulaProvider({
           }
 
           for (const f of fullFieldUpdates) {
-            store.current.editField({
-              dependencies: f.dependencies,
-              calculate: f.calculate,
-              id: f.id,
-              value: "",
-            });
+            try {
+              store.current.editField({
+                dependencies: f.dependencies,
+                calculate: f.calculate,
+                id: f.id,
+                value: "",
+              });
+            } catch (ex) {
+              store.current.addField({
+                dependencies: [],
+                calculate: undefined,
+                id: f.id,
+                value: "",
+              });
+
+              formulasFieldsById.delete(f.id);
+              simpleUpdates.push({ value: ERROR_CODE, id: f.id });
+            }
           }
 
           if (simpleUpdates.length) {
