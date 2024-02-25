@@ -1593,10 +1593,10 @@ for-each@^0.3.3:
   dependencies:
     is-callable "^1.1.3"
 
-formula-store@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/formula-store/-/formula-store-1.1.0.tgz#bea6d99d00c40029f802e779f6e0297937c948b0"
-  integrity sha512-8zDdn/SimHyanEpR9Wy/NWfvdFE/eGYL+vt/MRfBY01tNQtSRQksh876b1sLAQneMjGj9d/4XXPB8f645Lo9HA==
+formula-store@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/formula-store/-/formula-store-1.1.1.tgz#3791930196f544c80bcda2c24aa74da90451abf8"
+  integrity sha512-3gMbqVuyWx+1QBoo5tbovpRw8Woqqo7IW7mn4vYOIAsXpaJikgqUw5HxLAsAZJuBm6OAiqdyZ4d2Lrlpf2GCPA==
   dependencies:
     fast-graph "^1.5.0"
 
