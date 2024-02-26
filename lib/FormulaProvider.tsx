@@ -17,6 +17,16 @@ export const FormulaContext = React.createContext<FormulaContextValue>({
 const eventEmitter = getEventEmitter();
 export const ERROR_CODE = "#ERROR";
 
+const calculateOrError = (calculate: FormulaField<unknown>["calculate"]) => {
+  return (...dependencies: unknown[]) => {
+    if (dependencies.includes(ERROR_CODE)) {
+      return ERROR_CODE;
+    } else {
+      return calculate ? calculate(...dependencies) : undefined;
+    }
+  };
+};
+
 export function FormulaProvider({
   initialGrid,
   children,
@@ -47,6 +57,7 @@ export function FormulaProvider({
         const newSheet = sheet.current;
 
         for (const { id, value } of updates) {
+          console.log(id, value);
           const idx = cellIdxById.current.get(id);
 
           if (!idx) {
@@ -121,7 +132,7 @@ export function FormulaProvider({
     for (const f of formulas) {
       store.current.editField({
         dependencies: mapDependencies(f),
-        calculate: f.calculate,
+        calculate: calculateOrError(f.calculate),
         id: f.id,
         value: "",
       });
@@ -154,7 +165,7 @@ export function FormulaProvider({
             if (typeof cell === "object") {
               formulasFieldsById.set(id, original as string);
               fullFieldUpdates.push({
-                calculate: cell.calculate,
+                calculate: calculateOrError(cell.calculate),
                 dependencies: mapDependencies(cell),
                 id,
                 value: "",
@@ -178,7 +189,7 @@ export function FormulaProvider({
             try {
               store.current.editField({
                 dependencies: f.dependencies,
-                calculate: f.calculate,
+                calculate: calculateOrError(f.calculate),
                 id: f.id,
                 value: "",
               });
