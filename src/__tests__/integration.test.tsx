@@ -101,4 +101,15 @@ describe("integration", () => {
 
     expect(getCell(0, 0).value).toEqual("#ERROR");
   });
+
+  test("should show error in formula cell if one of the reference cells has an error", () => {
+    render(<App />);
+
+    // Change depenency cell.
+    const targetInput = getCell(0, 0);
+    fireEvent.change(targetInput, { target: { value: "=X1" } });
+    fireEvent.blur(targetInput);
+
+    expect(getCell(1, 1).value).toEqual("#ERROR");
+  });
 });
