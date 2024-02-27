@@ -89,6 +89,7 @@ describe("integration", () => {
     fireEvent.blur(targetInput);
 
     expect(getCell(0, 0).value).toEqual("#ERROR");
+    expect(getCell(1, 1).value).toEqual("#ERROR");
   });
 
   test("should show error when trying to add a dependency to a cell that doesn't exist", () => {
