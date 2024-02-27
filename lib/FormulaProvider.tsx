@@ -57,7 +57,6 @@ export function FormulaProvider({
         const newSheet = sheet.current;
 
         for (const { id, value } of updates) {
-          console.log(id, value);
           const idx = cellIdxById.current.get(id);
 
           if (!idx) {
