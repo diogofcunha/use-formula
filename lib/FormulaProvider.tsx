@@ -198,8 +198,23 @@ export function FormulaProvider({
                   dependencies: [],
                   calculate: undefined,
                   id: f.id,
-                  value: "",
+                  value: ERROR_CODE,
                 });
+
+                for (const dependencyFieldId of ex.dependentFields) {
+                  const formula = formulasFieldsById.get(dependencyFieldId);
+
+                  const parsed = parseCell(formula || "");
+
+                  if (typeof parsed === "object") {
+                    store.current.editField({
+                      id: dependencyFieldId,
+                      dependencies: mapDependencies(parsed),
+                      calculate: calculateOrError(parsed.calculate),
+                      value: ERROR_CODE,
+                    });
+                  }
+                }
               }
 
               formulasFieldsById.delete(f.id);
