@@ -49,28 +49,30 @@ describe("useFormula", () => {
     cleanup();
   });
 
-  test("should output initial grid values correctly", () => {
-    const { container, grid } = setup();
+  describe("getSheet", () => {
+    test("should output initial grid values correctly", () => {
+      const { container, grid } = setup();
 
-    let visitedCellCount = 0;
+      let visitedCellCount = 0;
 
-    for (let rowIdx = 0; rowIdx < grid.length; rowIdx++) {
-      const row = grid[rowIdx];
+      for (let rowIdx = 0; rowIdx < grid.length; rowIdx++) {
+        const row = grid[rowIdx];
 
-      for (let columnIdx = 0; columnIdx < row.length; columnIdx++) {
-        const cell = row[columnIdx];
-        visitedCellCount++;
+        for (let columnIdx = 0; columnIdx < row.length; columnIdx++) {
+          const cell = row[columnIdx];
+          visitedCellCount++;
 
-        const value = container.getByTestId(`value-${rowIdx}-${columnIdx}`);
-        const calculated = container.getByTestId(
-          `calculated-${rowIdx}-${columnIdx}`
-        );
+          const value = container.getByTestId(`value-${rowIdx}-${columnIdx}`);
+          const calculated = container.getByTestId(
+            `calculated-${rowIdx}-${columnIdx}`
+          );
 
-        expect(value.innerText).toEqual(cell.toString());
-        expect(calculated.innerText).toEqual(cell.toString());
+          expect(value.innerText).toEqual(cell.toString());
+          expect(calculated.innerText).toEqual(cell.toString());
+        }
       }
-    }
 
-    expect(visitedCellCount).toBe(container.getAllByRole("cell").length);
+      expect(visitedCellCount).toBe(container.getAllByRole("cell").length);
+    });
   });
 });
