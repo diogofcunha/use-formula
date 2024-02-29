@@ -65,7 +65,7 @@ export function FormulaProvider({
 
           const [rowIdx, columnIdx] = idx;
 
-          newSheet[rowIdx] = newSheet[columnIdx].slice();
+          newSheet[rowIdx] = newSheet[rowIdx].slice();
 
           const cell = newSheet[rowIdx][columnIdx];
 
